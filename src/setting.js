@@ -338,40 +338,47 @@ var SettingLayer = cc.Layer.extend({
 		var that = this;
 		var facebook = plugin.FacebookAgent.getInstance();
 		if (facebook.isLoggedIn()) {
-			if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
-				/*
-				var accesstoken = facebook.getAccessToken();
-				var expirationdate = new Date();
-				expirationdate.setMinutes(expirationdate.getSeconds() + 3600);
-				facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
-					if (type == plugin.FacebookAgent.CODE_SUCCEED) {
-						var userid = response["id"];
+			facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
+				if (type == plugin.FacebookAgent.CODE_SUCCEED) {
+					cc.log(response);
+					if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
+						/*
+						var accesstoken = facebook.getAccessToken();
+						var expirationdate = new Date();
+						expirationdate.setMinutes(expirationdate.getSeconds() + 3600);
+						facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
+							if (type == plugin.FacebookAgent.CODE_SUCCEED) {
+								var userid = response["id"];
+								if (userid){
+									that.parseFacebookLogin(userid, accesstoken, expirationdate);
+								} else {
+									that.g_messageLayer.removeFromParent();
+									that.messageBox("Login", 'Invalid User');
+								}
+							} else {
+								that.g_messageLayer.removeFromParent();
+								that.messageBox("Login", 'Invalid User');
+							}
+						});
+						 */
+					} else if(!cc.sys.isNative) {   //browser
+						var userid = facebook._userInfo['userID'];
+						var accesstoken = facebook._userInfo['accessToken'];
+						var expirationdate = new Date();
+						expirationdate.setMinutes(expirationdate.getSeconds() + facebook._userInfo['expiresIn']);
 						if (userid){
-							that.parseFacebookLogin(userid, accesstoken, expirationdate);
+							//that.parseFacebookLogin(userid, accesstoken, expirationdate);
+							cc.log(userid + " " + accesstoken + " " + expirationdate);
 						} else {
-							that.g_messageLayer.removeFromParent();
-							that.messageBox("Login", 'Invalid User');
+							cc.log("Facebook Login Failed1");
+							//that.g_messageLayer.removeFromParent();
+							//that.messageBox("Login", 'Invalid User');
 						}
-					} else {
-						that.g_messageLayer.removeFromParent();
-						that.messageBox("Login", 'Invalid User');
 					}
-				});
-				*/
-			} else if(!cc.sys.isNative) {   //browser
-				var userid = facebook._userInfo['userID'];
-				var accesstoken = facebook._userInfo['accessToken'];
-				var expirationdate = new Date();
-				expirationdate.setMinutes(expirationdate.getSeconds() + facebook._userInfo['expiresIn']);
-				if (userid){
-					//that.parseFacebookLogin(userid, accesstoken, expirationdate);
-					cc.log(userid + " " + accesstoken + " " + expirationdate);
 				} else {
-					cc.log("Facebook Login Failed1");
-					//that.g_messageLayer.removeFromParent();
-					//that.messageBox("Login", 'Invalid User');
+					cc.log("Graph API request failed, error #" + code + ": " + response);
 				}
-			}
+			});
 		} else {
 			facebook.login(["public_profile", "user_friends", "email"], function(code, response){
 				if(code == plugin.FacebookAgent.CODE_SUCCEED){
