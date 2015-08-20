@@ -358,6 +358,8 @@ var SettingLayer = cc.Layer.extend({
 						expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
 					}
 					if (userId) {
+						that.layerLoading = new LoadingLayer();
+						that.addChild(this.layerLoading, 100);
 						that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 					} else {
 						that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
@@ -387,6 +389,8 @@ var SettingLayer = cc.Layer.extend({
 								expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
 							}
 							if (userId) {
+								that.layerLoading = new LoadingLayer();
+								that.addChild(this.layerLoading, 100);
 								that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 							} else {
 								that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
@@ -419,8 +423,8 @@ var SettingLayer = cc.Layer.extend({
 				if (aResponse.length == 2) {
 					g_sesken = aResponse[0];
 					g_useame = aResponse[1];
-					this.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
-					this.tableSetting.reloadData();
+					that.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
+					that.tableSetting.reloadData();
 					var actWait = new cc.Sequence(new cc.DelayTime(1),
 							new cc.CallFunc(function () {
 								that.layerLoading.removeFromParent();
