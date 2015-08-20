@@ -51,6 +51,9 @@ var res = {
 	pngSmallIcon4_png : "res/pngUI/pngSmallIcon4.png",
 	pngSmallIcon5_png : "res/pngUI/pngSmallIcon5.png",
 	pngSmallIcon6_png : "res/pngUI/pngSmallIcon6.png",
+	pngMessageBox_png : "res/pngUI/pngMessageBox.png",
+	pngMessageBoxBtn1_png : "res/pngUI/pngMessageBoxBtn1.png",
+	pngMessageBoxBtn2_png : "res/pngUI/pngMessageBoxBtn2.png",
 	
 	//bmpFont
 	fntmasSulit24_fnt : "res/bmpFont/masSULIT24.fnt",

@@ -257,6 +257,10 @@ var SettingLayer = cc.Layer.extend({
 			this.facebookLogin();
 			break;
 		default:
+			g_useame = "";
+			g_sesken = "";
+			this.arraySetting = ['Login using Facebook', 'Advertise with Us', 'Conditions of Use'];
+			this.tableSetting.reloadData();
 			break;
 		}
 	},
@@ -340,43 +344,28 @@ var SettingLayer = cc.Layer.extend({
 		if (facebook.isLoggedIn()) {
 			facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
 				if (type == plugin.FacebookAgent.CODE_SUCCEED) {
-					cc.log(response);
+					var userId = response["id"];
+					var userEmail = response["email"];
+					var userName = response["name"];
 					if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
-						/*
-						var accesstoken = facebook.getAccessToken();
-						var expirationdate = new Date();
-						expirationdate.setMinutes(expirationdate.getSeconds() + 3600);
-						facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
-							if (type == plugin.FacebookAgent.CODE_SUCCEED) {
-								var userid = response["id"];
-								if (userid){
-									that.parseFacebookLogin(userid, accesstoken, expirationdate);
-								} else {
-									that.g_messageLayer.removeFromParent();
-									that.messageBox("Login", 'Invalid User');
-								}
-							} else {
-								that.g_messageLayer.removeFromParent();
-								that.messageBox("Login", 'Invalid User');
-							}
-						});
-						 */
+						var accessToken = facebook.getAccessToken();
+						var expirationDate = new Date();
+						expirationDate.setMinutes(expirationDate.getSeconds() + 3600);
 					} else if(!cc.sys.isNative) {   //browser
-						var userid = facebook._userInfo['userID'];
-						var accesstoken = facebook._userInfo['accessToken'];
-						var expirationdate = new Date();
-						expirationdate.setMinutes(expirationdate.getSeconds() + facebook._userInfo['expiresIn']);
-						if (userid){
-							//that.parseFacebookLogin(userid, accesstoken, expirationdate);
-							cc.log(userid + " " + accesstoken + " " + expirationdate);
-						} else {
-							cc.log("Facebook Login Failed1");
-							//that.g_messageLayer.removeFromParent();
-							//that.messageBox("Login", 'Invalid User');
-						}
+						var userId = facebook._userInfo['userID'];
+						var accessToken = facebook._userInfo['accessToken'];
+						var expirationDate = new Date();
+						expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
+					}
+					if (userId) {
+						this.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
+					} else {
+						this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+						this.addChild(this.layerLoading, 100);
 					}
 				} else {
-					cc.log("Graph API request failed, error #" + code + ": " + response);
+					this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+					this.addChild(this.layerLoading, 100);
 				}
 			});
 		} else {
@@ -384,89 +373,71 @@ var SettingLayer = cc.Layer.extend({
 				if(code == plugin.FacebookAgent.CODE_SUCCEED){
 					facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
 						if (type == plugin.FacebookAgent.CODE_SUCCEED) {
-							cc.log(response);
+							var userId = response["id"];
+							var userEmail = response["email"];
+							var userName = response["name"];
 							if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
-								/*
-								var accesstoken = facebook.getAccessToken();
-								var expirationdate = new Date();
-								expirationdate.setMinutes(expirationdate.getSeconds() + 3600);
-								facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
-									if (type == plugin.FacebookAgent.CODE_SUCCEED) {
-										var userid = response["id"];
-										if (userid){
-											that.parseFacebookLogin(userid, accesstoken, expirationdate);
-										} else {
-											that.g_messageLayer.removeFromParent();
-											that.messageBox("Login", 'Invalid User');
-										}
-									} else {
-										that.g_messageLayer.removeFromParent();
-										that.messageBox("Login", 'Invalid User');
-									}
-								});
-								 */
+								var accessToken = facebook.getAccessToken();
+								var expirationDate = new Date();
+								expirationDate.setMinutes(expirationDate.getSeconds() + 3600);
 							} else if(!cc.sys.isNative) {   //browser
-								var userid = facebook._userInfo['userID'];
-								var accesstoken = facebook._userInfo['accessToken'];
-								var expirationdate = new Date();
-								expirationdate.setMinutes(expirationdate.getSeconds() + facebook._userInfo['expiresIn']);
-								if (userid){
-									//that.parseFacebookLogin(userid, accesstoken, expirationdate);
-									cc.log(userid + " " + accesstoken + " " + expirationdate);
-								} else {
-									cc.log("Facebook Login Failed2");
-									//that.g_messageLayer.removeFromParent();
-									//that.messageBox("Login", 'Invalid User');
-								}
+								var userId = facebook._userInfo['userID'];
+								var accessToken = facebook._userInfo['accessToken'];
+								var expirationDate = new Date();
+								expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
+							}
+							if (userId) {
+								this.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
+							} else {
+								this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+								this.addChild(this.layerLoading, 100);
 							}
 						} else {
-							cc.log("Graph API request failed, error #" + code + ": " + response);
+							this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+							this.addChild(this.layerLoading, 100);
 						}
 					});
 				} else {
-					cc.log("Facebook Login Failed3");
-					//that.g_messageLayer.removeFromParent();
-					//that.messageBox("Login", 'Legion of Legends will be released soon. Head over to our FB page for more updates. Stay tuned!');
+					this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login not yet in public");
+					this.addChild(this.layerLoading, 100);
 				}
 			});
 		}
 	},
 
-	parseFacebookLogin: function(sFacebookId, sFacebookAT, sFacebookED) {
+	parseFacebookLogin: function(sFacebookId, sFacebookAT, sFacebookED, sFacebookEA, sFacebookUN) {
 		var that = this;
 		var xhr = cc.loader.getXMLHttpRequest();
-		xhr.open("POST", "https://api.parse.com/1/functions/lolUserLogin", true);
-		xhr.setRequestHeader("X-Parse-Application-Id", "LSZtRLpztDhGkNLRDEphKHsrD3eMChchBnnvpOav");
-		xhr.setRequestHeader("X-Parse-REST-API-Key", "KcWXQYzRmRoThGh1Iiu0sHmZCFti5XdH1rufrdik");
+		xhr.open("POST", g_config.parseConfig1 + "masSulitLogin", true);
+		xhr.setRequestHeader(g_config.parseConfig2, g_config.parseConfig3);
+		xhr.setRequestHeader(g_config.parseConfig4, g_config.parseConfig5);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				var jResult = JSON.parse(jResponse.result);
-				if (jResult.errorMessage == 'No Error') {
-					STOKEN = jResult.sSessionToken;
-					SASEND = jResult.sArenaSeasonEnd;
-					IBATTLERS = jResult.iParticipants;
-					if (jResult.iStatus == 0) {
-						var nextScene = new NameScene();
-						cc.director.runScene(new cc.TransitionFade(0.5, nextScene, cc.color(255, 255, 255)));
-					} else if (jResult.iStatus == 1) {
-						var nextScene = new DashboardScene();
-						cc.director.runScene(new cc.TransitionFade(0.5, nextScene, cc.color(255, 255, 255)));
-					}
+				var aResponse = jResponse.result;
+				if (aResponse.length == 2) {
+					g_sesken = aResponse[0];
+					g_useame = aResponse[1];
+					this.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
+					this.tableSetting.reloadData();
+					var actWait = new cc.Sequence(new cc.DelayTime(1),
+							new cc.CallFunc(function () {
+								that.layerLoading.removeFromParent();
+							}, this));
+					that.layerLoading.runAction(actWait);
 				} else {
-					that.messageBox("Legion of Legends", jResult.errorMessage);
+					that.layerLoading.removeFromParent();
+					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+					that.addChild(this.layerLoading, 100);
 				}
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
-				var jResponse = JSON.parse(xhr.responseText);
-				if (jResponse.code == 141) {
-					that.messageBox("Login", jResponse.error);
-				} else if (jResponse.code == 155) {
-					that.messageBox("Legion of Legends", "Server is busy, please try again");
-				}
+				that.layerLoading.removeFromParent();
+				that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+				that.addChild(this.layerLoading, 100);
 			}
 		};
-		xhr.send('{"sFBId":"' + sFacebookId + '","sFBAT":"' + sFacebookAT + '","sFBED":"' + sFacebookED.toISOString() + '","sAVsn":"' + CLIENT_VERSION + '"}');
+		xhr.send('{"sFBId":"' + sFacebookId + '","sFBAT":"' + sFacebookAT + '","sFBED":"' + sFacebookED.toISOString() + '","sFBEA":"' + sFacebookEA + '","sFBUN":"' + sFacebookUN + '"}');
 	}
 });
 

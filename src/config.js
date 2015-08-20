@@ -4,6 +4,103 @@ var CustomTableViewCell = cc.TableViewCell.extend({
 	}
 });
 
+var MessageBoxLayer = cc.Layer.extend({
+	layerBackground:null,
+	buttonBlank:null,
+	menuBlank:null,
+	spriteMessageBox:null,
+	buttonMessageBox:null,
+	menuMessageBox:null,
+	labelTitle:null,
+	labelMessage:null,
+	labelButton:null,
+	ctor:function (sTitle, sMessage) {
+		this._super();
+		var size = cc.winSize;
+
+		this.layerBackground = new cc.LayerColor(cc.color(0,0,0,125), size.width, size.height);
+		this.layerBackground.setPosition(cc.p(0,0));
+		this.addChild(this.layerBackground, 0);
+
+		this.buttonBlank = new cc.MenuItemImage(
+				res.pngBlank_png,
+				res.pngBlank_png,
+				function () {
+
+				}, this);
+		this.buttonBlank.attr({
+			x: size.width * 0.5,
+			y: size.height * 0.5,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+
+		this.menuBlank = new cc.Menu(this.buttonBlank);
+		this.menuBlank.x = 0;
+		this.menuBlank.y = 0;
+		this.addChild(this.menuBlank, 0);
+
+		this.spriteMessageBox = new cc.Sprite(res.pngMessageBox_png);
+		this.spriteMessageBox.attr({
+			x: size.width * 0.5,
+			y: size.height * 0.5,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+		this.addChild(this.spriteMessageBox, 0);	
+		
+		this.buttonMessageBox = new cc.MenuItemImage(
+				res.pngMessageBoxBtn1_png,
+				res.pngMessageBoxBtn2_png,
+				function () {
+					this.removeFromParent();
+				}, this);
+		this.buttonMessageBox.attr({
+			x: this.spriteMessageBox.getContentSize().width * 0.5,
+			y: this.spriteMessageBox.getContentSize().height * 0,
+			anchorX: 0.5,
+			anchorY: 0
+		});
+
+		this.menuMessageBox = new cc.Menu(this.buttonMessageBox);
+		this.menuMessageBox.x = 0;
+		this.menuMessageBox.y = 0;
+		this.spriteMessageBox.addChild(this.menuMessageBox, 0);
+		
+		this.labelButton = new cc.LabelBMFont('Okay', res.fntmasSulit24_fnt);
+		this.labelButton.setColor(cc.color(25, 110, 240));
+		this.labelButton.attr({
+			x: this.buttonMessageBox.getContentSize().width * 0.5,
+			y: this.buttonMessageBox.getContentSize().height * 0.5,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+		this.buttonMessageBox.addChild(this.labelButton, 0);
+		
+		this.labelTitle = new cc.LabelBMFont(sTitle, res.fntmasSulit32_fnt, 460, cc.TEXT_ALIGNMENT_CENTER);
+		this.labelTitle.setColor(cc.color(0, 0, 0));
+		this.labelTitle.attr({
+			x: this.spriteMessageBox.getContentSize().width * 0.5,
+			y: this.spriteMessageBox.getContentSize().height * 0.8,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+		this.spriteMessageBox.addChild(this.labelTitle, 0);
+		
+		this.labelMessage = new cc.LabelBMFont(sMessage, res.fntmasSulit24_fnt, 460, cc.TEXT_ALIGNMENT_CENTER);
+		this.labelMessage.setColor(cc.color(0, 0, 0));
+		this.labelMessage.attr({
+			x: this.spriteMessageBox.getContentSize().width * 0.5,
+			y: this.spriteMessageBox.getContentSize().height * 0.55,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+		this.spriteMessageBox.addChild(this.labelMessage, 0);
+		
+		return true;
+	}
+});
+
 var LoadingLayer = cc.Layer.extend({
 	layerBackground:null,
 	buttonBlank:null,
@@ -133,6 +230,8 @@ var g_config = {
 
 var g_category = "";
 var g_search = [];
+var g_sesken = "";
+var g_useame = "";
 var g_post = JSON.parse('{"sName":"Marasigames1","sPhone":"000-00-00","sMobile":"0900-000-0000","sEmail":"sample.email@gmail.com","sAddress":"000 sample address sample village sample city sample postal","sPerson":"Mr. Sample","sHours":"8:00 AM - 6:00 PM","sPage":"www.facebook.com/sampleurl","sDescription":"This is a sample description. The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox. This is a sample description. The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.","sDate":"Monday, July 27, 2015","sLocation":"Paranaque","aPhotos":[""],"iStars":4,"iReviews":4,"aReviews":["1||Fast Service!!!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 1, 2015||Cha Do Yun","5||Awesome Results!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 2, 2015||Ahn Yo Sub","3||Best service ever!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 3, 2015||Shin Se Gi"]}');
 
 var g_locations = ['Metro Manila (NCR)','Manila','Caloocan','Las Pinas','Makati','Malabon','Mandaluyong','Marikina','Muntinlupa','Navotas','Paranaque','Pasay','Pasig','Pateros','Quezon City','San Juan','Taguig','Valenzuela',
