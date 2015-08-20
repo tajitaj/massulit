@@ -344,6 +344,7 @@ var SettingLayer = cc.Layer.extend({
 		if (facebook.isLoggedIn()) {
 			facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
 				if (type == plugin.FacebookAgent.CODE_SUCCEED) {
+					cc.log(response);
 					var userId = response["id"];
 					var userEmail = response["email"];
 					var userName = response["first_name"];
@@ -375,6 +376,7 @@ var SettingLayer = cc.Layer.extend({
 				if(code == plugin.FacebookAgent.CODE_SUCCEED){
 					facebook.api("/me", plugin.FacebookAgent.HttpMethod.GET, function (type, response) {
 						if (type == plugin.FacebookAgent.CODE_SUCCEED) {
+							cc.log(response);
 							var userId = response["id"];
 							var userEmail = response["email"];
 							var userName = response["first_name"];
