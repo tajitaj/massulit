@@ -209,7 +209,11 @@ var SettingLayer = cc.Layer.extend({
 
 		this.buttonSettings.setEnabled(false);
 
-		this.arraySetting = ['Login using Facebook', 'Advertise with Us', 'Conditions of Use'];
+		if (g_useame != "" && g_sesken != "") {
+			that.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
+		} else {
+			this.arraySetting = ['Login using Facebook', 'Advertise with Us', 'Conditions of Use'];
+		}
 		this.tableSetting.reloadData();
 
 		return true;
