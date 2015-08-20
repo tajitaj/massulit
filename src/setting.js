@@ -358,14 +358,14 @@ var SettingLayer = cc.Layer.extend({
 						expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
 					}
 					if (userId) {
-						this.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
+						that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 					} else {
-						this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-						this.addChild(this.layerLoading, 100);
+						that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+						that.addChild(this.layerLoading, 100);
 					}
 				} else {
-					this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-					this.addChild(this.layerLoading, 100);
+					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+					that.addChild(this.layerLoading, 100);
 				}
 			});
 		} else {
@@ -387,19 +387,19 @@ var SettingLayer = cc.Layer.extend({
 								expirationDate.setMinutes(expirationDate.getSeconds() + facebook._userInfo['expiresIn']);
 							}
 							if (userId) {
-								this.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
+								that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 							} else {
-								this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-								this.addChild(this.layerLoading, 100);
+								that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+								that.addChild(this.layerLoading, 100);
 							}
 						} else {
-							this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-							this.addChild(this.layerLoading, 100);
+							that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
+							that.addChild(this.layerLoading, 100);
 						}
 					});
 				} else {
-					this.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login not yet in public");
-					this.addChild(this.layerLoading, 100);
+					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login not yet in public");
+					that.addChild(this.layerLoading, 100);
 				}
 			});
 		}
