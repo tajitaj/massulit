@@ -360,15 +360,15 @@ var SettingLayer = cc.Layer.extend({
 					}
 					if (userId) {
 						that.layerLoading = new LoadingLayer();
-						that.addChild(this.layerLoading, 100);
+						that.addChild(that.layerLoading, 100);
 						that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 					} else {
 						that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-						that.addChild(this.layerLoading, 100);
+						that.addChild(that.layerLoading, 100);
 					}
 				} else {
 					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-					that.addChild(this.layerLoading, 100);
+					that.addChild(that.layerLoading, 100);
 				}
 			});
 		} else {
@@ -392,20 +392,20 @@ var SettingLayer = cc.Layer.extend({
 							}
 							if (userId) {
 								that.layerLoading = new LoadingLayer();
-								that.addChild(this.layerLoading, 100);
+								that.addChild(that.layerLoading, 100);
 								that.parseFacebookLogin(userId, accessToken, expirationDate, userEmail, userName);
 							} else {
 								that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-								that.addChild(this.layerLoading, 100);
+								that.addChild(that.layerLoading, 100);
 							}
 						} else {
 							that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-							that.addChild(this.layerLoading, 100);
+							that.addChild(that.layerLoading, 100);
 						}
 					});
 				} else {
 					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login not yet in public");
-					that.addChild(this.layerLoading, 100);
+					that.addChild(that.layerLoading, 100);
 				}
 			});
 		}
@@ -435,12 +435,12 @@ var SettingLayer = cc.Layer.extend({
 				} else {
 					that.layerLoading.removeFromParent();
 					that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-					that.addChild(this.layerLoading, 100);
+					that.addChild(that.layerLoading, 100);
 				}
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
 				that.layerLoading.removeFromParent();
 				that.layerLoading = new MessageBoxLayer("masSULIT", "Facebook Login Failed");
-				that.addChild(this.layerLoading, 100);
+				that.addChild(that.layerLoading, 100);
 			}
 		};
 		xhr.send('{"sFBId":"' + sFacebookId + '","sFBAT":"' + sFacebookAT + '","sFBED":"' + sFacebookED.toISOString() + '","sFBEA":"' + sFacebookEA + '","sFBUN":"' + sFacebookUN + '"}');
