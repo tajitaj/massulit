@@ -346,7 +346,7 @@ var SettingLayer = cc.Layer.extend({
 				if (type == plugin.FacebookAgent.CODE_SUCCEED) {
 					var userId = response["id"];
 					var userEmail = response["email"];
-					var userName = response["name"];
+					var userName = response["first_name"];
 					if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
 						var accessToken = facebook.getAccessToken();
 						var expirationDate = new Date();
@@ -377,7 +377,7 @@ var SettingLayer = cc.Layer.extend({
 						if (type == plugin.FacebookAgent.CODE_SUCCEED) {
 							var userId = response["id"];
 							var userEmail = response["email"];
-							var userName = response["name"];
+							var userName = response["first_name"];
 							if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
 								var accessToken = facebook.getAccessToken();
 								var expirationDate = new Date();
