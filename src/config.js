@@ -230,8 +230,6 @@ var g_config = {
 
 var g_category = "";
 var g_search = [];
-var g_sesken = "";
-var g_useame = "";
 var g_post = JSON.parse('{"sName":"Marasigames1","sPhone":"000-00-00","sMobile":"0900-000-0000","sEmail":"sample.email@gmail.com","sAddress":"000 sample address sample village sample city sample postal","sPerson":"Mr. Sample","sHours":"8:00 AM - 6:00 PM","sPage":"www.facebook.com/sampleurl","sDescription":"This is a sample description. The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox. This is a sample description. The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.","sDate":"Monday, July 27, 2015","sLocation":"Paranaque","aPhotos":[""],"iStars":4,"iReviews":4,"aReviews":["1||Fast Service!!!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 1, 2015||Cha Do Yun","5||Awesome Results!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 2, 2015||Ahn Yo Sub","3||Best service ever!||The Quick Brown Fox Jumps Over The Lazy Dog. The Lazy Dog Was Jumped Over By The Quick Brown Fox.||August 3, 2015||Shin Se Gi"]}');
 
 var g_locations = ['Metro Manila (NCR)','Manila','Caloocan','Las Pinas','Makati','Malabon','Mandaluyong','Marikina','Muntinlupa','Navotas','Paranaque','Pasay','Pasig','Pateros','Quezon City','San Juan','Taguig','Valenzuela',

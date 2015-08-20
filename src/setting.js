@@ -209,8 +209,10 @@ var SettingLayer = cc.Layer.extend({
 
 		this.buttonSettings.setEnabled(false);
 
-		if (g_useame != "" && g_sesken != "") {
-			that.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
+		var sSesken = cc.sys.localStorage.getItem("sSesken") || "";
+		var sUseame = cc.sys.localStorage.getItem("sUseame") || "";
+		if (sUseame != "" && sSesken != "") {
+			this.arraySetting = ['Hi ' + sUseame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
 		} else {
 			this.arraySetting = ['Login using Facebook', 'Advertise with Us', 'Conditions of Use'];
 		}
@@ -261,8 +263,8 @@ var SettingLayer = cc.Layer.extend({
 			this.facebookLogin();
 			break;
 		default:
-			g_useame = "";
-			g_sesken = "";
+			cc.sys.localStorage.removeItem("sSesken");
+			cc.sys.localStorage.removeItem("sUseame");
 			this.arraySetting = ['Login using Facebook', 'Advertise with Us', 'Conditions of Use'];
 			this.tableSetting.reloadData();
 			break;
@@ -427,9 +429,9 @@ var SettingLayer = cc.Layer.extend({
 				var jResponse = JSON.parse(xhr.responseText);
 				var aResponse = jResponse.result;
 				if (aResponse.length == 2) {
-					g_sesken = aResponse[0];
-					g_useame = aResponse[1];
-					that.arraySetting = ['Hi ' + g_useame + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
+					cc.sys.localStorage.setItem("sSesken", aResponse[0]);
+					cc.sys.localStorage.setItem("sUseame", aResponse[1]);
+					that.arraySetting = ['Hi ' + aResponse[1] + ', Logout?', 'Advertise with Us', 'Conditions of Use'];
 					that.tableSetting.reloadData();
 					var actWait = new cc.Sequence(new cc.DelayTime(1),
 							new cc.CallFunc(function () {
