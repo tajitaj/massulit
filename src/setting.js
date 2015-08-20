@@ -347,7 +347,7 @@ var SettingLayer = cc.Layer.extend({
 					cc.log(response);
 					var userId = response["id"];
 					var userEmail = response["email"];
-					var userName = response["first_name"];
+					var userName = response["name"];
 					if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
 						var accessToken = facebook.getAccessToken();
 						var expirationDate = new Date();
@@ -379,7 +379,7 @@ var SettingLayer = cc.Layer.extend({
 							cc.log(response);
 							var userId = response["id"];
 							var userEmail = response["email"];
-							var userName = response["first_name"];
+							var userName = response["name"];
 							if(cc.sys.OS_ANDROID === cc.sys.os || cc.sys.OS_IOS === cc.sys.os){  //android/ios
 								var accessToken = facebook.getAccessToken();
 								var expirationDate = new Date();
