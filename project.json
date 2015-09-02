@@ -1,34 +1,43 @@
 {
-    "project_type": "javascript",
-
-    "debugMode" : 1,
-    "showFPS" : false,
-    "frameRate" : 60,
-    "id" : "gameCanvas",
-    "renderMode" : 0,
-    "engineDir":"frameworks/cocos2d-html5",
-
-    "modules" : ["cocos2d", "extensions", "external", "pluginx", "plugin-facebook"],
-    
-    "plugin" : {
-        "facebook": {
-            "appId" : "1607735426109954", 
-            "xfbml" : true,
-            "version" : "v2.3"
-        }
-    },
-
-    "jsList" : [
-        "src/resource.js",
-        "src/app.js",
-        "src/config.js",
-        "src/home.js",
-        "src/subcat.js",
-        "src/location.js",
-        "src/setting.js",
-        "src/condition.js",
-        "src/advertise.js",
-        "src/results.js",
-        "src/view.js"
-    ]
+  "project_type": "javascript",
+  "debugMode": 1,
+  "showFPS": false,
+  "frameRate": 60,
+  "id": "gameCanvas",
+  "renderMode": 0,
+  "engineDir": "frameworks/cocos2d-html5",
+  "modules": [
+    "cocos2d",
+    "extensions",
+    "external",
+    "pluginx",
+    "plugin-facebook"
+  ],
+  "plugin": {
+    "facebook": {
+      "appId": "1607735426109954",
+      "xfbml": true,
+      "version": "v2.3"
+    }
+  },
+  "jsList": [
+    "src/resource.js",
+    "src/app.js",
+    "src/config.js",
+    "src/scenes/home.js",
+    "src/scenes/subcat.js",
+    "src/scenes/location.js",
+    "src/scenes/setting.js",
+    "src/scenes/condition.js",
+    "src/scenes/advertise.js",
+    "src/scenes/results.js",
+    "src/scenes/view.js",
+    "src/scenes/newpost.js",
+    "src/widgets/header.js",
+    "src/widgets/footer.js",
+    "src/widgets/searcher.js",
+    "src/widgets/selecter.js",
+    "src/widgets/alerter.js",
+    "src/widgets/loader.js"
+  ]
 }

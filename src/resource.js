@@ -51,9 +51,17 @@ var res = {
 	pngSmallIcon4_png : "res/pngUI/pngSmallIcon4.png",
 	pngSmallIcon5_png : "res/pngUI/pngSmallIcon5.png",
 	pngSmallIcon6_png : "res/pngUI/pngSmallIcon6.png",
+	pngNewBox_png : "res/pngUI/pngNewBox.png",
 	pngMessageBox_png : "res/pngUI/pngMessageBox.png",
 	pngMessageBoxBtn1_png : "res/pngUI/pngMessageBoxBtn1.png",
 	pngMessageBoxBtn2_png : "res/pngUI/pngMessageBoxBtn2.png",
+	pngSelectBox_png : "res/pngUI/pngSelectBox.png",
+	pngSelectCellA1_png : "res/pngUI/pngSelectCellA1.png",
+	pngSelectCellB1_png : "res/pngUI/pngSelectCellB1.png",
+	pngSelectCellC1_png : "res/pngUI/pngSelectCellC1.png",
+	pngSelectCellA2_png : "res/pngUI/pngSelectCellA2.png",
+	pngSelectCellB2_png : "res/pngUI/pngSelectCellB2.png",
+	pngSelectCellC2_png : "res/pngUI/pngSelectCellC2.png",
 	
 	//bmpFont
 	fntmasSulit24_fnt : "res/bmpFont/masSULIT24.fnt",
