@@ -61,7 +61,7 @@ var HomeLayer = cc.Layer.extend({
 				that.layerCover.runAction(actWait);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
 				that.layerCover.removeFromParent();
-				that.LayerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+				that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
 				that.addChild(that.layerCover, 100);
 			}
 		};

@@ -2,7 +2,7 @@ var NewPostLayer = cc.Layer.extend({
 	layerBackground:null,
 	layerHeader:null,
 	layerFooter:null,
-	layerLoading:null,
+	layerCover:null,
 	selectedField:null,
 	ctor:function () {
 		this._super();
@@ -35,6 +35,7 @@ var NewPostLayer = cc.Layer.extend({
 		textEntry.setInputFlag(cc.EDITBOX_INPUT_FLAG_INITIAL_CAPS_SENTENCE);
 		textEntry.setDelegate(this);
 		textEntry.setReturnType(1);
+		textEntry.setEnabled(false);
 		this.addChild(textEntry, 0);
 
 		var scrollView = new ccui.ScrollView();
@@ -612,8 +613,8 @@ var NewPostLayer = cc.Layer.extend({
 		var buttonEditLocation = new cc.MenuItemLabel(
 				labelEdit,
 				function () {
-					this.layerLoading = new SelectBoxLayer("Select Location", g_locations, labelLocation);
-					this.addChild(this.layerLoading, 100);
+					this.layerCover = new SelecterLayer("Select Location", g_locations, labelLocation);
+					this.addChild(this.layerCover, 100);
 				}, this);
 		buttonEditLocation.attr({
 			x: labelHeader.getPositionX() + labelHeader.getContentSize().width + 10,
@@ -667,7 +668,7 @@ var NewPostLayer = cc.Layer.extend({
 		var buttonEditSubcategory = new cc.MenuItemLabel(
 				labelEdit,
 				function () {
-
+					this.parseLoadSubcategories(labelSubcategory, labelCategory.getString());
 				}, this);
 		buttonEditSubcategory.attr({
 			x: labelHeader.getPositionX() + labelHeader.getContentSize().width + 10,
@@ -721,7 +722,7 @@ var NewPostLayer = cc.Layer.extend({
 		var buttonEditCategory = new cc.MenuItemLabel(
 				labelEdit,
 				function () {
-					
+					this.parseLoadCategories(labelCategory);
 				}, this);
 		buttonEditCategory.attr({
 			x: labelHeader.getPositionX() + labelHeader.getContentSize().width + 10,
@@ -855,7 +856,10 @@ var NewPostLayer = cc.Layer.extend({
 		return true;
 	},
 
-	parseLoadCategories:function () {
+	parseLoadCategories:function (objReceiver) {
+		this.layerCover = new LoaderLayer();
+		this.addChild(this.layerCover, 100);
+		
 		var that = this;
 		var xhr = cc.loader.getXMLHttpRequest();
 		xhr.open("POST", g_config.parseConfig1 + "getCategories", true);
@@ -866,22 +870,26 @@ var NewPostLayer = cc.Layer.extend({
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				
-				that.arrayCategories = jResponse.result;
-				that.tableCategory.reloadData();
 				var actWait = new cc.Sequence(new cc.DelayTime(1),
 						new cc.CallFunc(function () {
-							that.layerLoading.removeFromParent();
+							that.layerCover.removeFromParent();
+							that.layerCover = new SelecterLayer("Select Category", jResponse.result, objReceiver);
+							that.addChild(that.layerCover, 100);
 						}, this));
-				that.layerLoading.runAction(actWait);
+				that.layerCover.runAction(actWait);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
-
+				that.layerCover.removeFromParent();
+				that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+				that.addChild(that.layerCover, 100);
 			}
 		};
 		xhr.send('{}');
 	},
 
-	parseLoadSubcategories:function () {
+	parseLoadSubcategories:function (objReceiver, sCategory) {
+		this.layerCover = new LoaderLayer();
+		this.addChild(this.layerCover, 100);
+		
 		var that = this;
 		var xhr = cc.loader.getXMLHttpRequest();
 		xhr.open("POST", g_config.parseConfig1 + "getSubCategories", true);
@@ -892,18 +900,20 @@ var NewPostLayer = cc.Layer.extend({
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				that.arraySubCategories = jResponse.result;
-				that.tableSubCategory.reloadData();
 				var actWait = new cc.Sequence(new cc.DelayTime(1),
 						new cc.CallFunc(function () {
-							that.layerLoading.removeFromParent();
+							that.layerCover.removeFromParent();
+							that.layerCover = new SelecterLayer("Select Category", jResponse.result, objReceiver);
+							that.addChild(that.layerCover, 100);
 						}, this));
-				that.layerLoading.runAction(actWait);
+				that.layerCover.runAction(actWait);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
-
+				that.layerCover.removeFromParent();
+				that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+				that.addChild(that.layerCover, 100);
 			}
 		};
-		xhr.send('{"sCategory":"' + g_category + '"}');
+		xhr.send('{"sCategory":"' + sCategory + '"}');
 	}
 });
 

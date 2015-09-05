@@ -36,7 +36,8 @@ var FooterLayer = cc.Layer.extend({
 				res.pngPostAnAd2_png,
 				res.pngPostAnAd2_png,
 				function () {
-
+					var nextScene = new NewPostScene();
+					cc.director.runScene(new cc.TransitionFade(1, nextScene, cc.color(255, 255, 255, 255)));
 				}, this);
 		this.buttonPostAnAd.attr({
 			x: spriteFooter.getContentSize().width * 0.375,
@@ -50,7 +51,8 @@ var FooterLayer = cc.Layer.extend({
 				res.pngMyPosts2_png,
 				res.pngMyPosts2_png,
 				function () {
-
+					//var nextScene = new HomeScene();
+					//cc.director.runScene(new cc.TransitionFade(1, nextScene, cc.color(255, 255, 255, 255)));
 				}, this);
 		this.buttonMyPosts.attr({
 			x: spriteFooter.getContentSize().width * 0.625,
