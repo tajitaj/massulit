@@ -12,8 +12,9 @@ var SearcherLayer = cc.Layer.extend({
 			anchorY: 0.5
 		});
 		this.textSearch.setPlaceholderFontSize(24);
-		this.textSearch.setPlaceHolder('What service do you need?');
+		this.textSearch.setPlaceHolder('Find a service?');
 		this.textSearch.setFontSize(24);
+		this.textSearch.setPlaceholderFontSize(24);
 		this.textSearch.setFontColor(cc.color(0, 0, 0));
 		this.textSearch.setMaxLength(50);
 		this.textSearch.setReturnType(cc.KEYBOARD_RETURNTYPE_DONE);

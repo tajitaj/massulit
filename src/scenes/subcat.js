@@ -51,7 +51,8 @@ var SubCatLayer = cc.Layer.extend({
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				that.arrayData = jResponse.result;
+				var aData = Base64.decode(jResponse.result).split(";");
+				that.arrayData = aData;
 				that.tableData.reloadData();
 				var actWait = new cc.Sequence(new cc.DelayTime(1),
 						new cc.CallFunc(function () {
@@ -59,12 +60,17 @@ var SubCatLayer = cc.Layer.extend({
 						}, this));
 				that.layerCover.runAction(actWait);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
-				that.layerCover.removeFromParent();
-				that.LayerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
-				that.addChild(that.layerCover, 100);
+				var actWait = new cc.Sequence(new cc.DelayTime(1),
+						new cc.CallFunc(function () {
+							that.layerCover.removeFromParent();
+							that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+							that.addChild(that.layerCover, 100);
+						}, this));
+				that.layerCover.runAction(actWait);
 			}
 		};
-		xhr.send('{"sCategory":"' + g_category + '"}');
+		var sTransfer = '{"sCategory":"' + g_category + '"}';
+		xhr.send('{"sEncoded":"' + Base64.encode(sTransfer) + '"}');
 	},
 
 	scrollViewDidScroll:function (view) {
