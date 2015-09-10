@@ -28,6 +28,7 @@ var NewPostLayer = cc.Layer.extend({
 		textEntry.setPlaceholderFontSize(24);
 		textEntry.setPlaceHolder('masSULIT your #1 services classifieds');
 		textEntry.setFontSize(24);
+		textEntry.setPlaceholderFontSize(24);
 		textEntry.setFontColor(cc.color(0, 0, 0));
 		//textEntry.setMaxLength(50);
 		textEntry.setReturnType(cc.KEYBOARD_RETURNTYPE_DONE);
@@ -35,7 +36,6 @@ var NewPostLayer = cc.Layer.extend({
 		textEntry.setInputFlag(cc.EDITBOX_INPUT_FLAG_INITIAL_CAPS_SENTENCE);
 		textEntry.setDelegate(this);
 		textEntry.setReturnType(1);
-		textEntry.setEnabled(false);
 		this.addChild(textEntry, 0);
 
 		var scrollView = new ccui.ScrollView();
@@ -559,7 +559,7 @@ var NewPostLayer = cc.Layer.extend({
 				labelEdit,
 				function () {
 					this.selectedField = 35;
-					textEntry.setText(labelPhone.getString());
+					textEntry.setString(labelPhone.getString());
 				}, this);
 		buttonEditPhone.attr({
 			x: labelHeader.getPositionX() + labelHeader.getContentSize().width + 10,
@@ -806,7 +806,7 @@ var NewPostLayer = cc.Layer.extend({
 		
 		var actTimer = new cc.Sequence(new cc.DelayTime(0.25),new cc.CallFunc(function () {
 			var labelField = scrollView.getChildByTag(this.selectedField);
-			labelField.setString(textEntry.getText());
+			labelField.setString(textEntry.getString());
 			
 			//auto correct spacing
 			yLatestHeight = 5;

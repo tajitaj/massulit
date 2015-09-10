@@ -50,6 +50,8 @@ var ResultsLayer = cc.Layer.extend({
 			xhr.open("POST", g_config.parseConfig1 + "getSearchResults", true);
 		} else if (g_search[0] == "Subcategory") {
 			xhr.open("POST", g_config.parseConfig1 + "getCategoryResults", true);
+		} else if (g_search[0] == "Featured") {
+			xhr.open("POST", g_config.parseConfig1 + "getFeaturedResults", true);
 		}
 		xhr.setRequestHeader(g_config.parseConfig2, g_config.parseConfig3);
 		xhr.setRequestHeader(g_config.parseConfig4, g_config.parseConfig5);
@@ -58,19 +60,36 @@ var ResultsLayer = cc.Layer.extend({
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				that.arrayData = jResponse.result;
-				that.tableData.reloadData();
+				var aData = Base64.decode(jResponse.result).split(";");
+				if (aData.length == 2 && aData[0] == "Error") {
+					var actWait = new cc.Sequence(new cc.DelayTime(1),
+							new cc.CallFunc(function () {
+								that.layerCover.removeFromParent();
+								that.layerCover = new AlerterLayer("masSULIT", aData[1]);
+								that.addChild(that.layerCover, 100);
+							}, this));
+					that.layerCover.runAction(actWait);				
+				} else {
+					that.arrayData = aData;
+					that.tableData.reloadData();
+					var actWait = new cc.Sequence(new cc.DelayTime(1),
+							new cc.CallFunc(function () {
+								that.layerCover.removeFromParent();
+							}, this));
+					that.layerCover.runAction(actWait);
+				}
+			} else if (xhr.readyState == 4 && xhr.status == 400) {
 				var actWait = new cc.Sequence(new cc.DelayTime(1),
 						new cc.CallFunc(function () {
 							that.layerCover.removeFromParent();
+							that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+							that.addChild(that.layerCover, 100);
 						}, this));
 				that.layerCover.runAction(actWait);
-			} else if (xhr.readyState == 4 && xhr.status == 400) {
-
 			}
 		};
-		xhr.send('{"sSearch":"' + g_search[1] +
-				'","sLocation":"' + g_search[2] + '"}');
+		var sTransfer = '{"sSearch":"' + g_search[1] + '","sLocation":"' + g_search[2] + '"}';
+		xhr.send('{"sEncoded":"' + Base64.encode(sTransfer) + '"}');
 	},
 
 	scrollViewDidScroll:function (view) {

@@ -52,7 +52,8 @@ var HomeLayer = cc.Layer.extend({
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
 				var jResponse = JSON.parse(xhr.responseText);
-				that.arrayData = jResponse.result;
+				var aData = Base64.decode(jResponse.result).split(";");
+				that.arrayData = aData;
 				that.tableData.reloadData();
 				var actWait = new cc.Sequence(new cc.DelayTime(1),
 						new cc.CallFunc(function () {
@@ -60,9 +61,13 @@ var HomeLayer = cc.Layer.extend({
 						}, this));
 				that.layerCover.runAction(actWait);
 			} else if (xhr.readyState == 4 && xhr.status == 400) {
-				that.layerCover.removeFromParent();
-				that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
-				that.addChild(that.layerCover, 100);
+				var actWait = new cc.Sequence(new cc.DelayTime(1),
+						new cc.CallFunc(function () {
+							that.layerCover.removeFromParent();
+							that.layerCover = new AlerterLayer("masSULIT", "Unable to load data from server.");
+							that.addChild(that.layerCover, 100);
+						}, this));
+				that.layerCover.runAction(actWait);				
 			}
 		};
 		xhr.send('{}');
@@ -98,7 +103,16 @@ var HomeLayer = cc.Layer.extend({
 
 	tableCellTouched:function (table, cell) {
 		g_category = cell.getChildByTag(101).getString();
-		var nextScene = new SubCatScene();
+		var sSelected = cell.getChildByTag(101).getString().toLowerCase();
+		if (sSelected.indexOf('featured') != -1) {
+			g_search[0] = "Featured";
+			g_search[1] = cell.getChildByTag(101).getString();
+			g_search[2] = this.layerHeader.getLocation();
+			g_search[3] = true;
+			var nextScene = new ResultsScene();
+		} else {
+			var nextScene = new SubCatScene();
+		}
 		cc.director.runScene(new cc.TransitionFade(1, nextScene, cc.color(255, 255, 255, 255)));
 	},
 
